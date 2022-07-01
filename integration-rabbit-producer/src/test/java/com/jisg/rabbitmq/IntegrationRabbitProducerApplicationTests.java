@@ -1,32 +1,27 @@
 package com.jisg.rabbitmq;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
+import org.springframework.amqp.rabbit.test.TestRabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
-import org.junit.Before;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-
-
-import static org.mockito.ArgumentMatchers.eq;
-
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class IntegrationRabbitProducerApplicationTests {
-
+	
 	@InjectMocks
-	static RabbitTemplate rabbitTemplateMock;
-	@Before
-	  public void setUp() {
-	    rabbitTemplateMock = Mockito.mock(RabbitTemplate.class);
-	  }
-	@Test
-	public void testBroadcast() {
-		Mockito.verify(rabbitTemplateMock).convertAndSend(eq("orderChannel"), eq("orders.2"), eq("Test"));
-	}
+    private TestRabbitTemplate template;
 
+    @Test
+    public void testSendAndReceive() {
+    	System.out.println("Inicio de la prueba");
+		when(template.convertSendAndReceive("orderChannel", "orders.1", "Hello world JISG")).thenReturn("baz:hello");
+        assertEquals(this.template.convertSendAndReceive("orderChannel", "orders.1", "Hello world JISG"), "baz:hello");
+    }
 }
