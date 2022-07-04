@@ -1,5 +1,6 @@
 package com.jisg.rabbitmq;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -14,6 +15,9 @@ import org.springframework.messaging.MessagingException;
 
 @SpringBootApplication
 public class IntegrationRabbitApplication {
+	
+	@Autowired
+	IInvoiceRepo repo;
 
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(IntegrationRabbitApplication.class).web(WebApplicationType.NONE).run(args);
@@ -44,6 +48,9 @@ public class IntegrationRabbitApplication {
 			@Override
 			public void handleMessage(Message<?> message) throws MessagingException {
 				System.out.println("Message: "+message.getPayload());
+				Invoice invoice = new Invoice((String) message.getPayload());
+				repo.save(invoice);
+				System.out.println("Invoice: "+ repo.findAll().stream().findFirst().toString());
 			}
 		};
 	}

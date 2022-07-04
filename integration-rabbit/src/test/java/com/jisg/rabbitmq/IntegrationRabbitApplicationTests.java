@@ -1,23 +1,14 @@
 package com.jisg.rabbitmq;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class IntegrationRabbitApplicationTests {
 
-	@BeforeEach
-	public void setup(){
-		System.out.println("Inicio de la prueba");
-	}
-	@AfterEach
-	public void destroy(){
-		System.out.println("Fin de la prueba");
-	}
 	@Test
-	public void pruebaGetRolAmazonCloud(){   
+	public void testReceiveMessage(){   
 		System.out.println("Primera prueba..");  	
 	}	
 
