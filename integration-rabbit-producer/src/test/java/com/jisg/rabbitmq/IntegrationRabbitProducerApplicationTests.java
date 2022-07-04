@@ -1,7 +1,10 @@
 package com.jisg.rabbitmq;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessagePostProcessor;
@@ -12,11 +15,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class IntegrationRabbitProducerApplicationTests {
 	
 	@InjectMocks
     private TestRabbitTemplate template;
+	
+	
 
     @Test
     public void testSendAndReceive() {
